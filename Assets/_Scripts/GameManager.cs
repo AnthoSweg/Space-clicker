@@ -42,28 +42,26 @@ public class GameManager : MonoBehaviour
         {
             gainedCurrency += planetsOwned[i].production;
         }
-        //oneSecondTimer -= Time.deltaTime;
-        //if (oneSecondTimer <= 0)
-        //{
-        //    oneSecondTimer = 1f;
-        //    currency += gainedCurrency;
-        //    //currency += (ulong)Mathf.Ceil(gainedCurrency);
-        //}
         currency += gainedCurrency * Time.deltaTime;
+
         UpdateCurrencyUI(gainedCurrency);
+        UpdateHapinessSlider();
     }
 
     private void FocusPlanet(Planet planet)
     {
         focusedPlanet = planet;
-        GameAssets.Main.ShopPanel.SetActive(true);
-        UpdateShopUI();
+        GameAssets.Main.PlanetPanel.SetActive(true);
+        focusedPlanet.GetNewHapinessState();
+        //GameAssets.Main.ShopPanel.SetActive(true);
+        //UpdateShopUI();
     }
 
     public void UnfocusPlanet()
     {
         focusedPlanet = null;
-        GameAssets.Main.ShopPanel.SetActive(false);
+        //GameAssets.Main.ShopPanel.SetActive(false);
+        GameAssets.Main.PlanetPanel.SetActive(false);
     }
 
     public void UpgradeSelectedPlanet()
@@ -95,5 +93,14 @@ public class GameManager : MonoBehaviour
 
         if (gainedCurrency != -1)
             GameAssets.Main.currencyProdTextMesh.text = gainedCurrency.ToString("F2");
+    }
+
+    private float sliderSmoothness = .95f;
+    void UpdateHapinessSlider()
+    {
+        if(focusedPlanet != null)
+        {
+            GameAssets.Main.hapinessSlider.value = Mathf.Lerp(GameAssets.Main.hapinessSlider.value, focusedPlanet.hapinessPoint / (float)Hapiness.maximumJoy, sliderSmoothness*Time.deltaTime);
+        }
     }
 }

@@ -25,8 +25,9 @@ public class Planet : MonoBehaviour
         get { return (baseProduction * upgradeOwned) * multiplier; }
     }
 
+    [Header("Debug")]
     public Hapiness hapiness;
-    private int hapinessPoint;
+    public int hapinessPoint;
     private float hapinessDecreaseTimer;
 
     [SerializeField] private SpriteRenderer face;
@@ -36,6 +37,7 @@ public class Planet : MonoBehaviour
         if (upgradeOwned == 0)
             upgradeOwned++;
         hapiness = Hapiness.asleep;
+        defaultMultiplicatorTextFontSize = GameAssets.Main.multiplicatorTextMesh.fontSize;
     }
 
     private void LateUpdate()
@@ -63,7 +65,7 @@ public class Planet : MonoBehaviour
         hapinessPoint++;
     }
 
-    private void GetNewHapinessState()
+    public void GetNewHapinessState()
     {
         //Get new hapiness state
         switch (hapiness)
@@ -131,8 +133,13 @@ public class Planet : MonoBehaviour
             default:
                 break;
         }
+
+        //Display the multiplicator value under the hapiness bar
+        GameAssets.Main.multiplicatorTextMesh.text = string.Format("x{0}", multiplier);
+        GameAssets.Main.multiplicatorTextMesh.fontSize = defaultMultiplicatorTextFontSize * multiplier;
     }
 
+    private static float defaultMultiplicatorTextFontSize;
     void UpdateBehaviour()
     {
         //For now it's just sprite swap but we can play anim here, play audio ect

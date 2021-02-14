@@ -19,5 +19,8 @@ public class GameAssets : MonoBehaviour
     public TextMeshProUGUI currencyTextMesh;
     public TextMeshProUGUI currencyProdTextMesh;
     public TextMeshProUGUI upgradeTextMesh;
+    public TextMeshProUGUI multiplicatorTextMesh;
     public GameObject ShopPanel;
+    public GameObject PlanetPanel;
+    public Slider hapinessSlider;
 }
