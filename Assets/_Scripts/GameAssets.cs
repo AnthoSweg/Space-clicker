@@ -1,18 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameAssets : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static GameAssets main;
+    public static GameAssets Main
     {
-        
+        get { if (main == null)
+                main = FindObjectOfType<GameAssets>();
+            return main;
+        }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Sprite[] faces;
+    public Camera cam;
+    public TextMeshProUGUI currencyTextMesh;
+    public TextMeshProUGUI currencyProdTextMesh;
+    public TextMeshProUGUI upgradeTextMesh;
+    public GameObject ShopPanel;
 }

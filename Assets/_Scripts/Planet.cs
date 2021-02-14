@@ -11,10 +11,12 @@ public class Planet : MonoBehaviour
     [Header("Exponential growth")]
     public float rateGrowth = 1.07f;
 
+    public string planetName;
+
     private int upgradeOwned;
     private float multiplier;
 
-    public float nextCost
+    public float upgradeCost
     {
         get { return baseCost * (Mathf.Pow(rateGrowth, upgradeOwned)); }
     }
@@ -23,15 +25,24 @@ public class Planet : MonoBehaviour
         get { return (baseProduction * upgradeOwned) * multiplier; }
     }
 
-    [HideInInspector] public Hapiness hapiness;
+    public Hapiness hapiness;
     private int hapinessPoint;
     private float hapinessDecreaseTimer;
+
+    [SerializeField] private SpriteRenderer face;
+
+    private void Start()
+    {
+        if (upgradeOwned == 0)
+            upgradeOwned++;
+        hapiness = Hapiness.asleep;
+    }
 
     private void LateUpdate()
     {
         //Decrease hapiness level
         hapinessDecreaseTimer -= Time.deltaTime;
-        if(hapinessDecreaseTimer == 0)
+        if(hapinessDecreaseTimer <= 0)
         {
             hapinessDecreaseTimer = 1f;
             hapinessPoint--;
@@ -44,10 +55,7 @@ public class Planet : MonoBehaviour
 
     public void BuyUpgrade()
     {
-        //If currency is enough
-        //Consume currency
         upgradeOwned++;
-        //Update UI
     }
 
     public void IncreaseHapiness()
@@ -64,6 +72,7 @@ public class Planet : MonoBehaviour
                 if(hapinessPoint>=(int)Hapiness.bored)
                 {
                     hapiness = Hapiness.bored;
+                    UpdateBehaviour();
                 }
                 break;
 
@@ -71,10 +80,12 @@ public class Planet : MonoBehaviour
                 if (hapinessPoint >= (int)Hapiness.happy)
                 {
                     hapiness = Hapiness.happy;
+                    UpdateBehaviour();
                 }
                 else if(hapinessPoint <= (int)Hapiness.asleep)
                 {
                     hapiness = Hapiness.asleep;
+                    UpdateBehaviour();
                 }
                 break;
 
@@ -82,10 +93,12 @@ public class Planet : MonoBehaviour
                 if (hapinessPoint >= (int)Hapiness.maximumJoy)
                 {
                     hapiness = Hapiness.maximumJoy;
+                    UpdateBehaviour();
                 }
                 else if (hapinessPoint <= (int)Hapiness.bored)
                 {
                     hapiness = Hapiness.bored;
+                    UpdateBehaviour();
                 }
                 break;
 
@@ -93,6 +106,7 @@ public class Planet : MonoBehaviour
                 if (hapinessPoint <= (int)Hapiness.happy)
                 {
                     hapiness = Hapiness.happy;
+                    UpdateBehaviour();
                 }
                 break;
             default:
@@ -100,14 +114,52 @@ public class Planet : MonoBehaviour
         }
 
         //set the multiplier
-        multiplier = (int)hapiness / 100f;
+        switch (hapiness)
+        {
+            case Hapiness.asleep:
+                multiplier = .1f;
+                break;
+            case Hapiness.bored:
+                multiplier = .85f;
+                break;
+            case Hapiness.happy:
+                multiplier = 1;
+                break;
+            case Hapiness.maximumJoy:
+                multiplier = 1.25f;
+                break;
+            default:
+                break;
+        }
+    }
+
+    void UpdateBehaviour()
+    {
+        //For now it's just sprite swap but we can play anim here, play audio ect
+        switch (hapiness)
+        {
+            case Hapiness.asleep:
+                face.sprite = GameAssets.Main.faces[0];
+                break;
+            case Hapiness.bored:
+                face.sprite = GameAssets.Main.faces[1];
+                break;
+            case Hapiness.happy:
+                face.sprite = GameAssets.Main.faces[2];
+                break;
+            case Hapiness.maximumJoy:
+                face.sprite = GameAssets.Main.faces[3];
+                break;
+            default:
+                break;
+        }
     }
 }
 
 public enum Hapiness
 {
-    asleep = 0,
-    bored = 35,
-    happy = 100,
-    maximumJoy = 200
+    asleep = 1,
+    bored = 10,
+    happy = 20,
+    maximumJoy = 30
 }
