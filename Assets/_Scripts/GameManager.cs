@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -8,14 +9,46 @@ public class GameManager : MonoBehaviour
 {
     //int de 0 à 18 446 744 073 709 551 615
     //public ulong currency;
-    public double currency;
-    public List<Planet> planetsOwned = new List<Planet>();
+    public List<Planet> allPlanets = new List<Planet>();
+    private static List<PlanetState> allPlanetsState = new List<PlanetState>();
+
+    private static double currency;
+    //public List<Planet> planetsOwned = new List<Planet>();
 
     public Planet focusedPlanet;
 
-    private float oneSecondTimer;
+    [HideInInspector] public bool gameStarted = false;
+
+    //I don't put anything in Start or Awake, this way I have control on the order of execution of everything and make sure there are no errors
+    public void Initialize()
+    {
+        for (int i = 0; i < allPlanets.Count; i++)
+        {
+            allPlanets[i].Initialize();
+        }
+        allPlanetsState.Clear();
+        for (int i = 0; i < allPlanets.Count; i++)
+        {
+            allPlanetsState.Add(allPlanets[i].state);
+        }
+
+        currency = SaveFile.CurrentState.currency;
+        TimeSpan timeWhileAway = DateTime.UtcNow - SaveFile.CurrentState.TimeStampUTC;
+        Debug.Log(timeWhileAway.TotalSeconds);
+        GainCurrency((float)timeWhileAway.TotalSeconds);
+
+        Planet.defaultMultiplicatorTextFontSize = GameAssets.Main.multiplicatorTextMesh.fontSize;
+
+        Save();
+    }
+
     void Update()
     {
+        //IF the game is not yet started (play game menu), don't start creating currency
+        if (!gameStarted)
+            return;
+
+
         if (Input.GetMouseButtonDown(0))
         {
             //Block actions if the click hits a UI element
@@ -23,7 +56,10 @@ public class GameManager : MonoBehaviour
                 return;
 
             if (focusedPlanet != null)
+            {
                 focusedPlanet.IncreaseHapiness();
+                GainCurrency();
+            }
             else
             {
                 RaycastHit2D hit = Physics2D.Raycast(GameAssets.Main.cam.ScreenToWorldPoint(Input.mousePosition), GameAssets.Main.cam.transform.forward);
@@ -37,15 +73,26 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        GainCurrency();
+
+        UpdatePlanetPanel();
+
+        //Check mobile input
+        //if(Input.GetKeyDown(KeyCode.bac))
+    }
+
+    private void GainCurrency(float second = 1f)
+    {
         float gainedCurrency = 0;
-        for (int i = 0; i < planetsOwned.Count; i++)
+        for (int i = 0; i < allPlanets.Count; i++)
         {
-            gainedCurrency += planetsOwned[i].production;
+            if (allPlanets[i].state.unlocked)
+                gainedCurrency += allPlanets[i].production;
         }
-        currency += gainedCurrency * Time.deltaTime;
+        currency += gainedCurrency * Time.deltaTime * second;
+        Debug.Log(gainedCurrency * Time.deltaTime * second);
 
         UpdateCurrencyUI(gainedCurrency);
-        UpdateHapinessSlider();
     }
 
     private void FocusPlanet(Planet planet)
@@ -53,14 +100,14 @@ public class GameManager : MonoBehaviour
         focusedPlanet = planet;
         GameAssets.Main.PlanetPanel.SetActive(true);
         focusedPlanet.GetNewHapinessState();
-        //GameAssets.Main.ShopPanel.SetActive(true);
-        //UpdateShopUI();
+        GameAssets.Main.ShopPanel.SetActive(true);
+        UpdateShopUI();
     }
 
     public void UnfocusPlanet()
     {
         focusedPlanet = null;
-        //GameAssets.Main.ShopPanel.SetActive(false);
+        GameAssets.Main.ShopPanel.SetActive(false);
         GameAssets.Main.PlanetPanel.SetActive(false);
     }
 
@@ -74,6 +121,8 @@ public class GameManager : MonoBehaviour
                 focusedPlanet.BuyUpgrade();
                 UpdateCurrencyUI();
                 UpdateShopUI();
+
+                Save();
             }
             else
             {
@@ -95,12 +144,20 @@ public class GameManager : MonoBehaviour
             GameAssets.Main.currencyProdTextMesh.text = gainedCurrency.ToString("F2");
     }
 
-    private float sliderSmoothness = .95f;
-    void UpdateHapinessSlider()
+    //private float sliderSmoothness = .95f;
+    void UpdatePlanetPanel()
     {
-        if(focusedPlanet != null)
+        if (focusedPlanet != null)
         {
-            GameAssets.Main.hapinessSlider.value = Mathf.Lerp(GameAssets.Main.hapinessSlider.value, focusedPlanet.hapinessPoint / (float)Hapiness.maximumJoy, sliderSmoothness*Time.deltaTime);
+            GameAssets.Main.hapinessSlider.value = focusedPlanet.state.hapinessPoint / (float)Hapiness.maximumJoy;
+            GameAssets.Main.planetProdTextMesh.text = focusedPlanet.production.ToString("F2");
         }
+    }
+
+    public static void Save()
+    {
+        SaveFile.CurrentState.currency = currency;
+        SaveFile.CurrentState.planetStates = allPlanetsState;
+        SaveFile.Write();
     }
 }

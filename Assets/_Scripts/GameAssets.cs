@@ -15,11 +15,13 @@ public class GameAssets : MonoBehaviour
         }
     }
     public Sprite[] faces;
+    public Sprite lockedPlanet;
     public Camera cam;
     public TextMeshProUGUI currencyTextMesh;
     public TextMeshProUGUI currencyProdTextMesh;
     public TextMeshProUGUI upgradeTextMesh;
     public TextMeshProUGUI multiplicatorTextMesh;
+    public TextMeshProUGUI planetProdTextMesh;
     public GameObject ShopPanel;
     public GameObject PlanetPanel;
     public Slider hapinessSlider;
