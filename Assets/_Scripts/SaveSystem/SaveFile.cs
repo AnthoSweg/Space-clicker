@@ -44,16 +44,7 @@ public partial class SaveFile
         SaveFile._fileContent = new SaveFile.Content();
         SaveFile._fileContent.WriteFile();
         return SaveFile._fileContent;
-    }
-
-    //Returns the most recent save
-    public static GameState CurrentState
-    {
-        get
-        {
-            return SaveFile.FileContent.GameStates[0];
-        }
-    }
+    }    
 
     #region Storage
 

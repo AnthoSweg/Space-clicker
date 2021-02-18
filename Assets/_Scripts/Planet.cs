@@ -35,7 +35,7 @@ public class Planet : MonoBehaviour
     public void Initialize()
     {
         //Search for the corresponding planet in the save file, based on the name
-        PlanetState ps = SaveFile.CurrentState.planetStates.Find(x => x.planetName.Equals(this.planetName));
+        PlanetState ps = GameState.CurrentState.planetStates.Find(x => x.planetName.Equals(this.planetName));
         if(ps != null)
         {
             this.state = ps;
@@ -193,7 +193,7 @@ public class Planet : MonoBehaviour
 
     private void GetHapinessPointsAfterBeingAway()
     {
-        TimeSpan timeSpentAway = DateTime.UtcNow - SaveFile.CurrentState.TimeStampUTC;
+        TimeSpan timeSpentAway = DateTime.UtcNow - GameState.CurrentState.TimeStampUTC;
         state.hapinessPoint -= Mathf.FloorToInt((float)timeSpentAway.TotalSeconds);
         GetNewHapinessState(state.hapinessPoint);
     }

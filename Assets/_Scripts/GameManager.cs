@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public List<Planet> allPlanets = new List<Planet>();
     private static List<PlanetState> allPlanetsState = new List<PlanetState>();
 
-    private static double currency;
     //public List<Planet> planetsOwned = new List<Planet>();
 
     public Planet focusedPlanet;
@@ -32,8 +31,8 @@ public class GameManager : MonoBehaviour
             allPlanetsState.Add(allPlanets[i].state);
         }
 
-        currency = SaveFile.CurrentState.currency;
-        TimeSpan timeWhileAway = DateTime.UtcNow - SaveFile.CurrentState.TimeStampUTC;
+        //currency = SaveFile.CurrentState.currency;
+        TimeSpan timeWhileAway = DateTime.UtcNow - GameState.CurrentState.TimeStampUTC;
         Debug.Log(timeWhileAway.TotalSeconds);
         GainCurrency((float)timeWhileAway.TotalSeconds);
 
@@ -89,7 +88,7 @@ public class GameManager : MonoBehaviour
             if (allPlanets[i].state.unlocked)
                 gainedCurrency += allPlanets[i].production;
         }
-        currency += gainedCurrency * Time.deltaTime * second;
+        GameState.CurrentState.currency += gainedCurrency * Time.deltaTime * second;
         Debug.Log(gainedCurrency * Time.deltaTime * second);
 
         UpdateCurrencyUI(gainedCurrency);
@@ -115,9 +114,9 @@ public class GameManager : MonoBehaviour
     {
         if (focusedPlanet != null)
         {
-            if (currency >= focusedPlanet.upgradeCost)
+            if (GameState.CurrentState.currency >= focusedPlanet.upgradeCost)
             {
-                currency -= focusedPlanet.upgradeCost;
+                GameState.CurrentState.currency -= focusedPlanet.upgradeCost;
                 focusedPlanet.BuyUpgrade();
                 UpdateCurrencyUI();
                 UpdateShopUI();
@@ -126,7 +125,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogFormat("<color=red>Not enough money : {0} out of {1}</color>", currency, focusedPlanet.upgradeCost);
+                Debug.LogFormat("<color=red>Not enough money : {0} out of {1}</color>", GameState.CurrentState.currency, focusedPlanet.upgradeCost);
             }
         }
     }
@@ -138,26 +137,23 @@ public class GameManager : MonoBehaviour
 
     private void UpdateCurrencyUI(float gainedCurrency = -1)
     {
-        GameAssets.Main.currencyTextMesh.text = currency.ToString("F2");
+        GameAssets.Main.currencyTextMesh.text = GameState.CurrentState.currency.ToString("F2");
 
         if (gainedCurrency != -1)
             GameAssets.Main.currencyProdTextMesh.text = gainedCurrency.ToString("F2");
     }
 
-    //private float sliderSmoothness = .95f;
     void UpdatePlanetPanel()
     {
         if (focusedPlanet != null)
         {
             GameAssets.Main.hapinessSlider.value = focusedPlanet.state.hapinessPoint / (float)Hapiness.maximumJoy;
-            GameAssets.Main.planetProdTextMesh.text = focusedPlanet.production.ToString("F2");
+            GameAssets.Main.planetProdTextMesh.text = string.Format("{0} Joy/s", focusedPlanet.production.ToString("F2"));
         }
     }
 
     public static void Save()
     {
-        SaveFile.CurrentState.currency = currency;
-        SaveFile.CurrentState.planetStates = allPlanetsState;
         SaveFile.Write();
     }
 }

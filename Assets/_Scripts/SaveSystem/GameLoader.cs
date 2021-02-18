@@ -8,7 +8,7 @@ public class GameLoader : MonoBehaviour
     public void PlayGame()
     {
         //Load Save File
-        if (SaveFile.CurrentState.currency == 0)
+        if (GameState.CurrentState.currency == 0)
         {
             NewGame();
         }
@@ -25,7 +25,7 @@ public class GameLoader : MonoBehaviour
         for (int i = 0; i < gm.allPlanets.Count; i++)
         {
             gm.allPlanets[i].state.planetName = gm.allPlanets[i].planetName;
-            SaveFile.CurrentState.planetStates.Add(gm.allPlanets[i].state);
+            GameState.CurrentState.planetStates.Add(gm.allPlanets[i].state);
         }
         //Unlcok first planet by default and set its state to happy
         gm.allPlanets[0].state.unlocked = true;

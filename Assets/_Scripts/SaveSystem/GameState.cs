@@ -54,6 +54,15 @@ public class GameState
         return this;
     }
 
+    //Returns the most recent save
+    public static GameState CurrentState
+    {
+        get
+        {
+            return SaveFile.FileContent.GameStates[0];
+        }
+    }
+
     public static GameState CreateNewGameState()
     {
         Debug.Log("Will create new save.");
