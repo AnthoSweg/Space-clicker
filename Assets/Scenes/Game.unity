@@ -359,12 +359,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 22.9
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 24
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 10, y: 10, z: 10, w: 10}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -455,15 +455,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894405fefef1bd145b8fd6a982f3a945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseCost: 4
-  baseProduction: 1.67
-  rateGrowth: 1.07
-  planetName: sunny3
   state:
     planetName: 
     unlocked: 0
     upgradeOwned: 1
     hapinessPoint: 0
+  data:
+    planetName: 
+    baseCost: 0
+    baseProduction: 1.67
+    rateGrowth: 1.07
   hapiness: 0
   face: {fileID: 1848032871}
 --- !u!4 &192368074
@@ -542,7 +543,7 @@ GameObject:
   - component: {fileID: 204621109}
   - component: {fileID: 204621108}
   m_Layer: 5
-  m_Name: Button
+  m_Name: backButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -561,13 +562,13 @@ RectTransform:
   m_Children:
   - {fileID: 1733303181}
   m_Father: {fileID: 1834782986}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 148, y: 0}
-  m_SizeDelta: {x: 51.87532, y: 46.299988}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 14}
+  m_SizeDelta: {x: 143.62996, y: 28.348022}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &204621108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,7 +858,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 74ceba8f92fbc8a4f982f934e560eae4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.62964374, g: 1, b: 0.5176471, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1079,6 +1080,139 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &560079334
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 560079335}
+  - component: {fileID: 560079337}
+  - component: {fileID: 560079336}
+  m_Layer: 5
+  m_Name: upgrades owned text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &560079335
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560079334}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1834782986}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 137.4, y: 15.17}
+  m_SizeDelta: {x: 86.30414, y: 66.9593}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &560079336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560079334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: x351
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 28
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 12.8
+  m_fontSizeMax: 28
+  m_fontStyle: 0
+  m_HorizontalAlignment: 4
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 0
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 1
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &560079337
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560079334}
+  m_CullTransparentMesh: 0
 --- !u!1 &592731743
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,15 +1259,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894405fefef1bd145b8fd6a982f3a945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseCost: 4
-  baseProduction: 1.67
-  rateGrowth: 1.07
-  planetName: sunny5
   state:
     planetName: 
     unlocked: 0
     upgradeOwned: 1
     hapinessPoint: 0
+  data:
+    planetName: 
+    baseCost: 0
+    baseProduction: 1.67
+    rateGrowth: 1.07
   hapiness: 0
   face: {fileID: 1130700402}
 --- !u!4 &592731746
@@ -1615,15 +1750,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894405fefef1bd145b8fd6a982f3a945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseCost: 4
-  baseProduction: 1.67
-  rateGrowth: 1.07
-  planetName: sunny4
   state:
     planetName: 
     unlocked: 0
     upgradeOwned: 1
     hapinessPoint: 0
+  data:
+    planetName: 
+    baseCost: 0
+    baseProduction: 1.67
+    rateGrowth: 1.07
   hapiness: 0
   face: {fileID: 361809398}
 --- !u!4 &753354751
@@ -1706,7 +1842,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &825388062
 GameObject:
@@ -1754,15 +1890,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894405fefef1bd145b8fd6a982f3a945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseCost: 4
-  baseProduction: 1.67
-  rateGrowth: 1.07
-  planetName: sunny2
   state:
     planetName: 
     unlocked: 0
     upgradeOwned: 1
     hapinessPoint: 0
+  data:
+    planetName: 
+    baseCost: 0
+    baseProduction: 1.67
+    rateGrowth: 1.07
   hapiness: 0
   face: {fileID: 1135064102}
 --- !u!4 &825388065
@@ -1924,6 +2061,7 @@ GameObject:
   m_Component:
   - component: {fileID: 927934236}
   - component: {fileID: 927934235}
+  - component: {fileID: 927934238}
   - component: {fileID: 927934234}
   - component: {fileID: 927934237}
   m_Layer: 0
@@ -1952,14 +2090,15 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4a695339133da504c994d4f6e4b73c78, type: 3}
   lockedPlanet: {fileID: 21300000, guid: 420547ac7a63add46a613e30cadfe597, type: 3}
   cam: {fileID: 1198675824}
+  ShopPanel: {fileID: 1834782985}
+  PlanetPanel: {fileID: 198813050}
+  hapinessSlider: {fileID: 1168758454}
   currencyTextMesh: {fileID: 1203665083}
   currencyProdTextMesh: {fileID: 678065437}
   upgradeTextMesh: {fileID: 133707754}
   multiplicatorTextMesh: {fileID: 1733828778}
   planetProdTextMesh: {fileID: 2057108382}
-  ShopPanel: {fileID: 1834782985}
-  PlanetPanel: {fileID: 198813050}
-  hapinessSlider: {fileID: 1168758454}
+  planetUpgradesOwnedTextMesh: {fileID: 560079336}
 --- !u!114 &927934235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2007,6 +2146,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gm: {fileID: 927934235}
+--- !u!114 &927934238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927934233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f2a041c490d37f42967b56bb61759e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planetDatas:
+  - planetName: Sunny1
+    baseCost: 4
+    baseProduction: 1.67
+    rateGrowth: 1.07
+  - planetName: Sunny2
+    baseCost: 12
+    baseProduction: 2
+    rateGrowth: 1.33
+  - planetName: Sunny3
+    baseCost: 50
+    baseProduction: 5
+    rateGrowth: 1.44
+  - planetName: Sunny4
+    baseCost: 100
+    baseProduction: 2
+    rateGrowth: 1.75
+  - planetName: Sunny5
+    baseCost: 1000
+    baseProduction: 3
+    rateGrowth: 2
+  baseMultiplierPerHapniessLevel:
+  - 0.5
+  - 0.75
+  - 1
+  - 1.25
+  baseMaxTimeAwayInHour: 2
+  orbit:
+    xAxis: 2.5
+    yAxis: 5
+  orbitSpeed: 0.05
 --- !u!1 &936924576
 GameObject:
   m_ObjectHideFlags: 0
@@ -2039,7 +2221,7 @@ Transform:
   - {fileID: 27440165}
   - {fileID: 1712824320}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &936924578
 CircleCollider2D:
@@ -2069,15 +2251,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894405fefef1bd145b8fd6a982f3a945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseCost: 4
-  baseProduction: 1.67
-  rateGrowth: 1.07
-  planetName: sunny
   state:
     planetName: 
     unlocked: 0
     upgradeOwned: 1
     hapinessPoint: 0
+  data:
+    planetName: 
+    baseCost: 0
+    baseProduction: 1.67
+    rateGrowth: 1.07
   hapiness: 0
   face: {fileID: 27440166}
 --- !u!1 &978337814
@@ -2289,7 +2472,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 74ceba8f92fbc8a4f982f934e560eae4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.55066025, b: 0.5176471, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2370,7 +2553,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 74ceba8f92fbc8a4f982f934e560eae4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.514151, g: 0.713043, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3457,7 +3640,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1834782986
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3470,6 +3653,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2111121240}
+  - {fileID: 560079335}
   - {fileID: 204621107}
   m_Father: {fileID: 1941402892}
   m_RootOrder: 0
@@ -3573,7 +3757,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 74ceba8f92fbc8a4f982f934e560eae4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.76488394, g: 0.5176471, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3773,7 +3957,7 @@ RectTransform:
   - {fileID: 978337815}
   - {fileID: 727223422}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4018,7 +4202,7 @@ GameObject:
   - component: {fileID: 2111121242}
   - component: {fileID: 2111121241}
   m_Layer: 5
-  m_Name: Button
+  m_Name: upgradeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4041,7 +4225,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -43.72, y: 47.00992}
+  m_AnchoredPosition: {x: -43.72, y: 60}
   m_SizeDelta: {x: 269.3046, y: 66.95926}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2111121241

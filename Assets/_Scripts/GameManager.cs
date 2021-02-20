@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
     public List<Planet> allPlanets = new List<Planet>();
     private static List<PlanetState> allPlanetsState = new List<PlanetState>();
 
-    //public List<Planet> planetsOwned = new List<Planet>();
-
     public Planet focusedPlanet;
 
     [HideInInspector] public bool gameStarted = false;
@@ -21,9 +19,12 @@ public class GameManager : MonoBehaviour
     //I don't put anything in Start or Awake, this way I have control on the order of execution of everything and make sure there are no errors
     public void Initialize()
     {
+        //Setup all planets
         for (int i = 0; i < allPlanets.Count; i++)
         {
-            allPlanets[i].Initialize();
+            int index = i;
+            allPlanets[index].data = GameParams.Main.planetDatas[index];
+            allPlanets[index].Initialize(index);
         }
         allPlanetsState.Clear();
         for (int i = 0; i < allPlanets.Count; i++)
@@ -31,12 +32,16 @@ public class GameManager : MonoBehaviour
             allPlanetsState.Add(allPlanets[i].state);
         }
 
-        //currency = SaveFile.CurrentState.currency;
+        //Get currency based on time spent not on app
         TimeSpan timeWhileAway = DateTime.UtcNow - GameState.CurrentState.TimeStampUTC;
-        Debug.Log(timeWhileAway.TotalSeconds);
+        double timeAwayInSeconds = timeWhileAway.TotalSeconds;
+        timeAwayInSeconds = Mathf.Clamp((float)timeAwayInSeconds, 0, GameParams.Main.baseMaxTimeAwayInHour * 3600); //max time away is in hour
         GainCurrency((float)timeWhileAway.TotalSeconds);
 
         Planet.defaultMultiplicatorTextFontSize = GameAssets.Main.multiplicatorTextMesh.fontSize;
+
+        GameAssets.Main.PlanetPanel.SetActive(false);
+        GameAssets.Main.ShopPanel.SetActive(false);
 
         Save();
     }
@@ -72,12 +77,33 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        Orbit();
+
         GainCurrency();
 
         UpdatePlanetPanel();
 
         //Check mobile input
         //if(Input.GetKeyDown(KeyCode.bac))
+    }
+
+    Vector2 newPos;
+    private float timeInGame;
+    void Orbit()
+    {
+        if (focusedPlanet == null)
+        {
+            timeInGame += Time.deltaTime;
+            for (int i = 0; i < allPlanets.Count; i++)
+            {
+                //First planet (index 0) is at the center and must not orbit
+                if (i > 0)
+                {
+                    newPos = GameParams.Main.orbit.Evaluate((timeInGame + (360 / allPlanets.Count - 1) * i) * GameParams.Main.orbitSpeed);
+                    allPlanets[i].transform.position = newPos;
+                }
+            }
+        }
     }
 
     private void GainCurrency(float second = 1f)
@@ -89,7 +115,6 @@ public class GameManager : MonoBehaviour
                 gainedCurrency += allPlanets[i].production;
         }
         GameState.CurrentState.currency += gainedCurrency * Time.deltaTime * second;
-        Debug.Log(gainedCurrency * Time.deltaTime * second);
 
         UpdateCurrencyUI(gainedCurrency);
     }
@@ -132,7 +157,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateShopUI()
     {
-        GameAssets.Main.upgradeTextMesh.text = string.Format("Upgrade {0} for {1}", focusedPlanet.planetName, focusedPlanet.upgradeCost.ToString("F2"));
+        GameAssets.Main.upgradeTextMesh.text = string.Format("Upgrade {0} for {1}", focusedPlanet.data.planetName, focusedPlanet.upgradeCost.ToString("F2"));
     }
 
     private void UpdateCurrencyUI(float gainedCurrency = -1)
@@ -149,6 +174,7 @@ public class GameManager : MonoBehaviour
         {
             GameAssets.Main.hapinessSlider.value = focusedPlanet.state.hapinessPoint / (float)Hapiness.maximumJoy;
             GameAssets.Main.planetProdTextMesh.text = string.Format("{0} Joy/s", focusedPlanet.production.ToString("F2"));
+            GameAssets.Main.planetUpgradesOwnedTextMesh.text = string.Format("x{0}", focusedPlanet.state.upgradeOwned);
         }
     }
 

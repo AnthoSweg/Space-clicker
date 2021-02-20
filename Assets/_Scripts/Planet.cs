@@ -5,25 +5,19 @@ using System;
 
 public class Planet : MonoBehaviour
 {
-    [Header("First cost of the upgrade")]
-    public float baseCost;
-    [Header("nbr generated/s")]
-    public float baseProduction = 1.67f;
-    [Header("Exponential growth")]
-    public float rateGrowth = 1.07f;
-
-    public string planetName;
     public PlanetState state;
+    public PlanetData data;
+    private int index;
 
     private float multiplier;
 
     public float upgradeCost
     {
-        get { return baseCost * (Mathf.Pow(rateGrowth, state.upgradeOwned)); }
+        get { return data.baseCost * (Mathf.Pow(data.rateGrowth, state.upgradeOwned)); }
     }
     public float production
     {
-        get { return (baseProduction * state.upgradeOwned) * multiplier; }
+        get { return (data.baseProduction * state.upgradeOwned) * multiplier; }
     }
 
     [Header("Debug")]
@@ -32,10 +26,11 @@ public class Planet : MonoBehaviour
 
     [SerializeField] private SpriteRenderer face;
 
-    public void Initialize()
+    public void Initialize(int index)
     {
+        this.index = index;
         //Search for the corresponding planet in the save file, based on the name
-        PlanetState ps = GameState.CurrentState.planetStates.Find(x => x.planetName.Equals(this.planetName));
+        PlanetState ps = GameState.CurrentState.planetStates.Find(x => x.planetName.Equals(data.planetName));
         if(ps != null)
         {
             this.state = ps;
@@ -46,24 +41,16 @@ public class Planet : MonoBehaviour
         }
         else
         {
-            Debug.LogErrorFormat("Planet {0} not found in the save file", planetName);
+            Debug.LogErrorFormat("Planet {0} not found in the save file", data.planetName);
         }
     }
 
     private void LateUpdate()
     {
-        //Decrease hapiness level
-        //hapinessDecreaseTimer -= Time.deltaTime;
-        //if(hapinessDecreaseTimer <= 0)
-        //{
-        //    hapinessDecreaseTimer = 1f;
-        //    state.hapinessPoint--;
-        //}
         state.hapinessPoint -= Time.deltaTime;
-
         state.hapinessPoint = Mathf.Clamp(state.hapinessPoint, (int)Hapiness.asleep, (int)Hapiness.maximumJoy);
 
-        GetNewHapinessState();
+        GetNewHapinessState();        
     }
 
     public void BuyUpgrade()
@@ -146,16 +133,16 @@ public class Planet : MonoBehaviour
         switch (hapiness)
         {
             case Hapiness.asleep:
-                multiplier = .1f;
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0];
                 break;
             case Hapiness.bored:
-                multiplier = .85f;
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0];
                 break;
             case Hapiness.happy:
-                multiplier = 1;
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0];
                 break;
             case Hapiness.maximumJoy:
-                multiplier = 1.25f;
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0];
                 break;
             default:
                 break;
@@ -208,6 +195,19 @@ public class PlanetState
     public bool unlocked = false;
     public int upgradeOwned = 1;
     public float hapinessPoint;
+}
+
+[System.Serializable]
+public class PlanetData
+{
+    public string planetName;
+
+    [Header("First cost of the upgrade")]
+    public float baseCost;
+    [Header("nbr generated/s")]
+    public float baseProduction = 1.67f;
+    [Header("Exponential growth")]
+    public float rateGrowth = 1.07f;
 }
 
 public enum Hapiness

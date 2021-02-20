@@ -24,14 +24,13 @@ public class GameLoader : MonoBehaviour
         Debug.Log("/////////NEW GAME/////////");
         for (int i = 0; i < gm.allPlanets.Count; i++)
         {
-            gm.allPlanets[i].state.planetName = gm.allPlanets[i].planetName;
+            gm.allPlanets[i].data = GameParams.Main.planetDatas[i];
+            gm.allPlanets[i].state.planetName = gm.allPlanets[i].data.planetName;
             GameState.CurrentState.planetStates.Add(gm.allPlanets[i].state);
         }
         //Unlcok first planet by default and set its state to happy
         gm.allPlanets[0].state.unlocked = true;
         gm.allPlanets[0].state.hapinessPoint = (int)Hapiness.happy;
-
-        //GameManager.Save();
 
         gm.Initialize();
     }

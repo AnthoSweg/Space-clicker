@@ -14,15 +14,19 @@ public class GameAssets : MonoBehaviour
             return main;
         }
     }
+    [Header("Sprites")]
     public Sprite[] faces;
     public Sprite lockedPlanet;
+    [Header("GameObject links")]
     public Camera cam;
+    public GameObject ShopPanel;
+    public GameObject PlanetPanel;
+    public Slider hapinessSlider;
+    [Header("Texts")]
     public TextMeshProUGUI currencyTextMesh;
     public TextMeshProUGUI currencyProdTextMesh;
     public TextMeshProUGUI upgradeTextMesh;
     public TextMeshProUGUI multiplicatorTextMesh;
     public TextMeshProUGUI planetProdTextMesh;
-    public GameObject ShopPanel;
-    public GameObject PlanetPanel;
-    public Slider hapinessSlider;
+    public TextMeshProUGUI planetUpgradesOwnedTextMesh;
 }
