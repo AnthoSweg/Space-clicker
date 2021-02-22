@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,28 @@ public class GameManager : MonoBehaviour
     public Planet focusedPlanet;
 
     [HideInInspector] public bool gameStarted = false;
+
+    public PlayerInput inputs;
+    public Inputs controls;
+
+    private void Awake()
+    {
+        //inputs.ActivateInput();
+        //inputs.onActionTriggered(PlayerInput.)
+        controls = new Inputs();
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+        controls.General.Click.performed += _ => OnClick();
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
+        controls.General.Click.performed -= _ => OnClick();
+    }
 
     //I don't put anything in Start or Awake, this way I have control on the order of execution of everything and make sure there are no errors
     public void Initialize()
@@ -53,29 +76,29 @@ public class GameManager : MonoBehaviour
             return;
 
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            //Block actions if the click hits a UI element
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    //Block actions if the click hits a UI element
+        //    if (EventSystem.current.IsPointerOverGameObject())
+        //        return;
 
-            if (focusedPlanet != null)
-            {
-                focusedPlanet.IncreaseHapiness();
-                GainCurrency();
-            }
-            else
-            {
-                RaycastHit2D hit = Physics2D.Raycast(GameAssets.Main.cam.ScreenToWorldPoint(Input.mousePosition), GameAssets.Main.cam.transform.forward);
-                if (hit.collider != null)
-                {
-                    if (hit.collider.gameObject.TryGetComponent(out Planet planet))
-                    {
-                        FocusPlanet(planet);
-                    }
-                }
-            }
-        }
+        //    if (focusedPlanet != null)
+        //    {
+        //        focusedPlanet.IncreaseHapiness();
+        //        GainCurrency();
+        //    }
+        //    else
+        //    {
+        //        RaycastHit2D hit = Physics2D.Raycast(GameAssets.Main.camController.cam.ScreenToWorldPoint(Input.mousePosition), GameAssets.Main.camController.cam.transform.forward);
+        //        if (hit.collider != null)
+        //        {
+        //            if (hit.collider.gameObject.TryGetComponent(out Planet planet))
+        //            {
+        //                FocusPlanet(planet);
+        //            }
+        //        }
+        //    }
+        //}
 
         Orbit();
 
@@ -85,6 +108,32 @@ public class GameManager : MonoBehaviour
 
         //Check mobile input
         //if(Input.GetKeyDown(KeyCode.bac))
+    }
+
+    //void Click
+
+    public void OnClick()
+    {
+        //Block actions if the click hits a UI element
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        if (focusedPlanet != null)
+        {
+            focusedPlanet.IncreaseHapiness();
+            GainCurrency();
+        }
+        else
+        {
+            RaycastHit2D hit = Physics2D.Raycast(GameAssets.Main.camController.cam.ScreenToWorldPoint(Input.mousePosition), GameAssets.Main.camController.cam.transform.forward);
+            if (hit.collider != null)
+            {
+                if (hit.collider.gameObject.TryGetComponent(out Planet planet))
+                {
+                    FocusPlanet(planet);
+                }
+            }
+        }
     }
 
     Vector2 newPos;
@@ -100,7 +149,7 @@ public class GameManager : MonoBehaviour
                 if (i > 0)
                 {
                     newPos = GameParams.Main.orbit.Evaluate((timeInGame + (360 / allPlanets.Count - 1) * i) * GameParams.Main.orbitSpeed);
-                    allPlanets[i].transform.position = newPos;
+                    allPlanets[i].pTransform.position = newPos;
                 }
             }
         }
@@ -122,8 +171,9 @@ public class GameManager : MonoBehaviour
     private void FocusPlanet(Planet planet)
     {
         focusedPlanet = planet;
-        GameAssets.Main.PlanetPanel.SetActive(true);
         focusedPlanet.GetNewHapinessState();
+        GameAssets.Main.camController.ZoomIn(planet.pTransform);
+        GameAssets.Main.PlanetPanel.SetActive(true);
         GameAssets.Main.ShopPanel.SetActive(true);
         UpdateShopUI();
     }
@@ -131,6 +181,7 @@ public class GameManager : MonoBehaviour
     public void UnfocusPlanet()
     {
         focusedPlanet = null;
+        GameAssets.Main.camController.ZoomOut();
         GameAssets.Main.ShopPanel.SetActive(false);
         GameAssets.Main.PlanetPanel.SetActive(false);
     }

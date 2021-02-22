@@ -7,7 +7,7 @@ public class Planet : MonoBehaviour
 {
     public PlanetState state;
     public PlanetData data;
-    private int index;
+    public Transform pTransform;
 
     private float multiplier;
 
@@ -28,7 +28,7 @@ public class Planet : MonoBehaviour
 
     public void Initialize(int index)
     {
-        this.index = index;
+        pTransform = this.transform;
         //Search for the corresponding planet in the save file, based on the name
         PlanetState ps = GameState.CurrentState.planetStates.Find(x => x.planetName.Equals(data.planetName));
         if(ps != null)

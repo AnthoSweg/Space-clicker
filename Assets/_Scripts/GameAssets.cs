@@ -18,7 +18,7 @@ public class GameAssets : MonoBehaviour
     public Sprite[] faces;
     public Sprite lockedPlanet;
     [Header("GameObject links")]
-    public Camera cam;
+    public CameraController camController;
     public GameObject ShopPanel;
     public GameObject PlanetPanel;
     public Slider hapinessSlider;

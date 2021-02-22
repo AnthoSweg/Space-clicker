@@ -19,4 +19,8 @@ public class GameParams : MonoBehaviour
 
     public Ellipse orbit;
     public float orbitSpeed;
+
+    public float zoomOutLevel = 10;
+    public float zoomInLevel = 5;
+
 }
