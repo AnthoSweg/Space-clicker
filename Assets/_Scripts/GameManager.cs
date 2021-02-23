@@ -82,6 +82,7 @@ public class GameManager : MonoBehaviour
 
         GameAssets.Main.PlanetPanel.SetActive(false);
 
+        GameAssets.Main.camController.cam.orthographicSize = 50;
         GameAssets.Main.camController.ZoomOut();
 
         Save();

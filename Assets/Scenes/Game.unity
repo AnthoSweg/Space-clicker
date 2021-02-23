@@ -329,6 +329,7 @@ MonoBehaviour:
     hapinessPoint: 0
   data:
     planetName: 
+    planetCost: 0
     baseCost: 0
     baseProduction: 1.67
     rateGrowth: 1.07
@@ -1404,6 +1405,7 @@ MonoBehaviour:
     hapinessPoint: 0
   data:
     planetName: 
+    planetCost: 0
     baseCost: 0
     baseProduction: 1.67
     rateGrowth: 1.07
@@ -2132,6 +2134,7 @@ MonoBehaviour:
     hapinessPoint: 0
   data:
     planetName: 
+    planetCost: 0
     baseCost: 0
     baseProduction: 1.67
     rateGrowth: 1.07
@@ -2274,6 +2277,7 @@ MonoBehaviour:
     hapinessPoint: 0
   data:
     planetName: 
+    planetCost: 0
     baseCost: 0
     baseProduction: 1.67
     rateGrowth: 1.07
@@ -2623,6 +2627,7 @@ MonoBehaviour:
   focusedPlanet: {fileID: 0}
   gameStarted: 0
   inputs: {fileID: 927934239}
+  testValue: 0
 --- !u!4 &927934236
 Transform:
   m_ObjectHideFlags: 0
@@ -2664,6 +2669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planetDatas:
   - planetName: Sunny1
+    planetCost: 0
     baseCost: 4
     baseProduction: 1.67
     rateGrowth: 1.07
@@ -2673,6 +2679,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 8b1577e82b7fe1443a7a01066ebf2f7b, type: 3}
     - {fileID: 21300000, guid: 4a695339133da504c994d4f6e4b73c78, type: 3}
   - planetName: Sunny2
+    planetCost: 0
     baseCost: 12
     baseProduction: 2
     rateGrowth: 1.33
@@ -2682,6 +2689,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 8b1577e82b7fe1443a7a01066ebf2f7b, type: 3}
     - {fileID: 21300000, guid: 4a695339133da504c994d4f6e4b73c78, type: 3}
   - planetName: Sunny3
+    planetCost: 0
     baseCost: 50
     baseProduction: 5
     rateGrowth: 1.44
@@ -2691,6 +2699,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 8b1577e82b7fe1443a7a01066ebf2f7b, type: 3}
     - {fileID: 21300000, guid: 4a695339133da504c994d4f6e4b73c78, type: 3}
   - planetName: Sunny4
+    planetCost: 0
     baseCost: 100
     baseProduction: 2
     rateGrowth: 1.75
@@ -2700,6 +2709,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 8b1577e82b7fe1443a7a01066ebf2f7b, type: 3}
     - {fileID: 21300000, guid: 4a695339133da504c994d4f6e4b73c78, type: 3}
   - planetName: Sunny5
+    planetCost: 0
     baseCost: 1000
     baseProduction: 3
     rateGrowth: 2
@@ -2821,6 +2831,7 @@ MonoBehaviour:
     hapinessPoint: 0
   data:
     planetName: 
+    planetCost: 0
     baseCost: 0
     baseProduction: 1.67
     rateGrowth: 1.07
@@ -3392,7 +3403,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 50
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3416,7 +3427,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1198675822}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -3.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
