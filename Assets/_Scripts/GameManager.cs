@@ -12,6 +12,20 @@ public class GameManager : MonoBehaviour
     //public ulong currency;
     public List<Planet> allPlanets = new List<Planet>();
     private static List<PlanetState> allPlanetsState = new List<PlanetState>();
+    public static List<Planet> ownedPlanets = new List<Planet>();
+    //public int unlockedPlanetsCount
+    //{
+    //    get
+    //    {
+    //        int count = 0;
+    //        for (int i = 0; i < allPlanets.Count; i++)
+    //        {
+    //            if (allPlanets[i].state.unlocked)
+    //                count++;
+    //        }
+    //        return count;
+    //    }
+    //}
 
     public Planet focusedPlanet;
 
@@ -22,8 +36,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        //inputs.ActivateInput();
-        //inputs.onActionTriggered(PlayerInput.)
         controls = new Inputs();
     }
 
@@ -54,6 +66,11 @@ public class GameManager : MonoBehaviour
         {
             allPlanetsState.Add(allPlanets[i].state);
         }
+        for (int i = 0; i < allPlanets.Count; i++)
+        {
+            if (allPlanets[i].state.unlocked)
+                ownedPlanets.Add(allPlanets[i]);
+        }
 
         //Get currency based on time spent not on app
         TimeSpan timeWhileAway = DateTime.UtcNow - GameState.CurrentState.TimeStampUTC;
@@ -64,7 +81,8 @@ public class GameManager : MonoBehaviour
         Planet.defaultMultiplicatorTextFontSize = GameAssets.Main.multiplicatorTextMesh.fontSize;
 
         GameAssets.Main.PlanetPanel.SetActive(false);
-        GameAssets.Main.ShopPanel.SetActive(false);
+
+        GameAssets.Main.camController.ZoomOut();
 
         Save();
     }
@@ -75,42 +93,18 @@ public class GameManager : MonoBehaviour
         if (!gameStarted)
             return;
 
-
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    //Block actions if the click hits a UI element
-        //    if (EventSystem.current.IsPointerOverGameObject())
-        //        return;
-
-        //    if (focusedPlanet != null)
-        //    {
-        //        focusedPlanet.IncreaseHapiness();
-        //        GainCurrency();
-        //    }
-        //    else
-        //    {
-        //        RaycastHit2D hit = Physics2D.Raycast(GameAssets.Main.camController.cam.ScreenToWorldPoint(Input.mousePosition), GameAssets.Main.camController.cam.transform.forward);
-        //        if (hit.collider != null)
-        //        {
-        //            if (hit.collider.gameObject.TryGetComponent(out Planet planet))
-        //            {
-        //                FocusPlanet(planet);
-        //            }
-        //        }
-        //    }
-        //}
-
         Orbit();
 
         GainCurrency();
 
         UpdatePlanetPanel();
 
-        //Check mobile input
-        //if(Input.GetKeyDown(KeyCode.bac))
+        if (Input.GetKeyDown(KeyCode.Escape))
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                Save();
+            }
     }
-
-    //void Click
 
     public void OnClick()
     {
@@ -138,18 +132,20 @@ public class GameManager : MonoBehaviour
 
     Vector2 newPos;
     private float timeInGame;
+    public float testValue;
     void Orbit()
     {
         if (focusedPlanet == null)
         {
             timeInGame += Time.deltaTime;
-            for (int i = 0; i < allPlanets.Count; i++)
+            for (int i = 0; i < ownedPlanets.Count; i++)
             {
                 //First planet (index 0) is at the center and must not orbit
                 if (i > 0)
                 {
-                    newPos = GameParams.Main.orbit.Evaluate((timeInGame + (360 / allPlanets.Count - 1) * i) * GameParams.Main.orbitSpeed);
-                    allPlanets[i].pTransform.position = newPos;
+                    newPos = GameParams.Main.orbit.Evaluate(((1f / (ownedPlanets.Count - 1)) * i) + timeInGame * GameParams.Main.orbitSpeed);
+                    //newPos = GameParams.Main.orbit.Evaluate(testValue * i);
+                    ownedPlanets[i].pTransform.position = newPos;
                 }
             }
         }
@@ -158,10 +154,10 @@ public class GameManager : MonoBehaviour
     private void GainCurrency(float second = 1f)
     {
         float gainedCurrency = 0;
-        for (int i = 0; i < allPlanets.Count; i++)
+        for (int i = 0; i < ownedPlanets.Count; i++)
         {
-            if (allPlanets[i].state.unlocked)
-                gainedCurrency += allPlanets[i].production;
+            //if (allPlanets[i].state.unlocked)
+                gainedCurrency += ownedPlanets[i].production;
         }
         GameState.CurrentState.currency += gainedCurrency * Time.deltaTime * second;
 
@@ -174,15 +170,12 @@ public class GameManager : MonoBehaviour
         focusedPlanet.GetNewHapinessState();
         GameAssets.Main.camController.ZoomIn(planet.pTransform);
         GameAssets.Main.PlanetPanel.SetActive(true);
-        GameAssets.Main.ShopPanel.SetActive(true);
-        UpdateShopUI();
     }
 
     public void UnfocusPlanet()
     {
         focusedPlanet = null;
         GameAssets.Main.camController.ZoomOut();
-        GameAssets.Main.ShopPanel.SetActive(false);
         GameAssets.Main.PlanetPanel.SetActive(false);
     }
 
@@ -195,7 +188,6 @@ public class GameManager : MonoBehaviour
                 GameState.CurrentState.currency -= focusedPlanet.upgradeCost;
                 focusedPlanet.BuyUpgrade();
                 UpdateCurrencyUI();
-                UpdateShopUI();
 
                 Save();
             }
@@ -204,11 +196,6 @@ public class GameManager : MonoBehaviour
                 Debug.LogFormat("<color=red>Not enough money : {0} out of {1}</color>", GameState.CurrentState.currency, focusedPlanet.upgradeCost);
             }
         }
-    }
-
-    public void UpdateShopUI()
-    {
-        GameAssets.Main.upgradeTextMesh.text = string.Format("Upgrade {0} for {1}", focusedPlanet.data.planetName, focusedPlanet.upgradeCost.ToString("F2"));
     }
 
     private void UpdateCurrencyUI(float gainedCurrency = -1)
@@ -225,7 +212,6 @@ public class GameManager : MonoBehaviour
         {
             GameAssets.Main.hapinessSlider.value = focusedPlanet.state.hapinessPoint / (float)Hapiness.maximumJoy;
             GameAssets.Main.planetProdTextMesh.text = string.Format("{0} Joy/s", focusedPlanet.production.ToString("F2"));
-            GameAssets.Main.planetUpgradesOwnedTextMesh.text = string.Format("x{0}", focusedPlanet.state.upgradeOwned);
         }
     }
 

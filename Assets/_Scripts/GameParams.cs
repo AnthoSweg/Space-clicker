@@ -22,5 +22,5 @@ public class GameParams : MonoBehaviour
 
     public float zoomOutLevel = 10;
     public float zoomInLevel = 5;
-
+    public float camYOffset = -1f;
 }

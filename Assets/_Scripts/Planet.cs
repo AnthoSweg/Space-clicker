@@ -31,13 +31,16 @@ public class Planet : MonoBehaviour
         pTransform = this.transform;
         //Search for the corresponding planet in the save file, based on the name
         PlanetState ps = GameState.CurrentState.planetStates.Find(x => x.planetName.Equals(data.planetName));
-        if(ps != null)
+        if (ps != null)
         {
             this.state = ps;
             if (state.unlocked)
                 GetHapinessPointsAfterBeingAway();
             else
+            {
                 face.sprite = GameAssets.Main.lockedPlanet;
+                this.gameObject.SetActive(false);
+            }
         }
         else
         {
@@ -160,22 +163,22 @@ public class Planet : MonoBehaviour
         switch (hapiness)
         {
             case Hapiness.asleep:
-                face.sprite = GameAssets.Main.faces[0];
+                face.sprite = data.faces[0];
                 break;
             case Hapiness.bored:
-                face.sprite = GameAssets.Main.faces[1];
+                face.sprite = data.faces[1];
                 break;
             case Hapiness.happy:
-                face.sprite = GameAssets.Main.faces[2];
+                face.sprite = data.faces[2];
                 break;
             case Hapiness.maximumJoy:
-                face.sprite = GameAssets.Main.faces[3];
+                face.sprite = data.faces[3];
                 break;
             default:
                 break;
         }
 
-        GameManager.Save();
+        //GameManager.Save();
     }
 
     private void GetHapinessPointsAfterBeingAway()
@@ -201,13 +204,16 @@ public class PlanetState
 public class PlanetData
 {
     public string planetName;
-
+    [Header("Planet cost")]
+    public float planetCost;
     [Header("First cost of the upgrade")]
     public float baseCost;
     [Header("nbr generated/s")]
     public float baseProduction = 1.67f;
     [Header("Exponential growth")]
     public float rateGrowth = 1.07f;
+    [Header("Faces from saddest to happiest")]
+    public Sprite[] faces;
 }
 
 public enum Hapiness

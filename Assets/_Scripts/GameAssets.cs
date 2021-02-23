@@ -15,7 +15,6 @@ public class GameAssets : MonoBehaviour
         }
     }
     [Header("Sprites")]
-    public Sprite[] faces;
     public Sprite lockedPlanet;
     [Header("GameObject links")]
     public CameraController camController;
@@ -25,8 +24,6 @@ public class GameAssets : MonoBehaviour
     [Header("Texts")]
     public TextMeshProUGUI currencyTextMesh;
     public TextMeshProUGUI currencyProdTextMesh;
-    public TextMeshProUGUI upgradeTextMesh;
     public TextMeshProUGUI multiplicatorTextMesh;
     public TextMeshProUGUI planetProdTextMesh;
-    public TextMeshProUGUI planetUpgradesOwnedTextMesh;
 }
