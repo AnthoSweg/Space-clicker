@@ -27,7 +27,12 @@ public class ShopEntry : MonoBehaviour
 
     public void BuyUpgrade()
     {
-        planet.BuyUpgrade();
-        UpdateEntry();
+        if (GameState.CurrentState.currency >= planet.upgradeCost)
+        {
+            GameState.CurrentState.currency -= planet.upgradeCost;
+            planet.BuyUpgrade();
+            UpdateEntry();
+        }
     }
 }
+

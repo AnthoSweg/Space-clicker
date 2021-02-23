@@ -16,7 +16,7 @@ public class GameLoader : MonoBehaviour
         {
             LoadGame();
         }
-        gm.gameStarted = true;
+        GameManager.gameStarted = true;
     }
 
     private void NewGame()

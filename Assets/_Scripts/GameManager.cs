@@ -5,31 +5,17 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    //int de 0 à 18 446 744 073 709 551 615
-    //public ulong currency;
     public List<Planet> allPlanets = new List<Planet>();
     private static List<PlanetState> allPlanetsState = new List<PlanetState>();
     public static List<Planet> ownedPlanets = new List<Planet>();
-    //public int unlockedPlanetsCount
-    //{
-    //    get
-    //    {
-    //        int count = 0;
-    //        for (int i = 0; i < allPlanets.Count; i++)
-    //        {
-    //            if (allPlanets[i].state.unlocked)
-    //                count++;
-    //        }
-    //        return count;
-    //    }
-    //}
 
     public Planet focusedPlanet;
 
-    [HideInInspector] public bool gameStarted = false;
+    public static bool gameStarted = false;
 
     public PlayerInput inputs;
     public Inputs controls;
@@ -54,6 +40,8 @@ public class GameManager : MonoBehaviour
     //I don't put anything in Start or Awake, this way I have control on the order of execution of everything and make sure there are no errors
     public void Initialize()
     {
+        Planet.defaultMultiplicatorTextFontSize = GameAssets.Main.multiplicatorTextMesh.fontSize;
+
         //Setup all planets
         for (int i = 0; i < allPlanets.Count; i++)
         {
@@ -78,7 +66,6 @@ public class GameManager : MonoBehaviour
         timeAwayInSeconds = Mathf.Clamp((float)timeAwayInSeconds, 0, GameParams.Main.baseMaxTimeAwayInHour * 3600); //max time away is in hour
         GainCurrency((float)timeWhileAway.TotalSeconds);
 
-        Planet.defaultMultiplicatorTextFontSize = GameAssets.Main.multiplicatorTextMesh.fontSize;
 
         GameAssets.Main.PlanetPanel.SetActive(false);
 
@@ -105,6 +92,8 @@ public class GameManager : MonoBehaviour
             {
                 Save();
             }
+            else
+                Save();
     }
 
     public void OnClick()
@@ -158,7 +147,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < ownedPlanets.Count; i++)
         {
             //if (allPlanets[i].state.unlocked)
-                gainedCurrency += ownedPlanets[i].production;
+            gainedCurrency += ownedPlanets[i].production;
         }
         GameState.CurrentState.currency += gainedCurrency * Time.deltaTime * second;
 
@@ -180,24 +169,24 @@ public class GameManager : MonoBehaviour
         GameAssets.Main.PlanetPanel.SetActive(false);
     }
 
-    public void UpgradeSelectedPlanet()
-    {
-        if (focusedPlanet != null)
-        {
-            if (GameState.CurrentState.currency >= focusedPlanet.upgradeCost)
-            {
-                GameState.CurrentState.currency -= focusedPlanet.upgradeCost;
-                focusedPlanet.BuyUpgrade();
-                UpdateCurrencyUI();
+    //public void UpgradeSelectedPlanet()
+    //{
+    //    if (focusedPlanet != null)
+    //    {
+    //        if (GameState.CurrentState.currency >= focusedPlanet.upgradeCost)
+    //        {
+    //            GameState.CurrentState.currency -= focusedPlanet.upgradeCost;
+    //            focusedPlanet.BuyUpgrade();
+    //            UpdateCurrencyUI();
 
-                Save();
-            }
-            else
-            {
-                Debug.LogFormat("<color=red>Not enough money : {0} out of {1}</color>", GameState.CurrentState.currency, focusedPlanet.upgradeCost);
-            }
-        }
-    }
+    //            Save();
+    //        }
+    //        else
+    //        {
+    //            Debug.LogFormat("<color=red>Not enough money : {0} out of {1}</color>", GameState.CurrentState.currency, focusedPlanet.upgradeCost);
+    //        }
+    //    }
+    //}
 
     private void UpdateCurrencyUI(float gainedCurrency = -1)
     {
@@ -214,6 +203,24 @@ public class GameManager : MonoBehaviour
             GameAssets.Main.hapinessSlider.value = focusedPlanet.state.hapinessPoint / (float)Hapiness.maximumJoy;
             GameAssets.Main.planetProdTextMesh.text = string.Format("{0} Joy/s", focusedPlanet.production.ToString("F2"));
         }
+    }
+
+    public void SwitchToNextPlanet()
+    {
+        int index = ownedPlanets.IndexOf(focusedPlanet);
+        index++;
+        if (index > ownedPlanets.Count - 1)
+            index = 0;
+        FocusPlanet(ownedPlanets[index]);
+    }
+
+    public void SwitchToPrevPlanet()
+    {
+        int index = ownedPlanets.IndexOf(focusedPlanet);
+        index--;
+        if (index < 0)
+            index = ownedPlanets.Count - 1;
+        FocusPlanet(ownedPlanets[index]);
     }
 
     public static void Save()

@@ -50,6 +50,9 @@ public class Planet : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!GameManager.gameStarted)
+            return;
+
         state.hapinessPoint -= Time.deltaTime;
         state.hapinessPoint = Mathf.Clamp(state.hapinessPoint, (int)Hapiness.asleep, (int)Hapiness.maximumJoy);
 
@@ -139,13 +142,13 @@ public class Planet : MonoBehaviour
                 multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0];
                 break;
             case Hapiness.bored:
-                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0];
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[1];
                 break;
             case Hapiness.happy:
-                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0];
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[2];
                 break;
             case Hapiness.maximumJoy:
-                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0];
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[3];
                 break;
             default:
                 break;
