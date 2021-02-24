@@ -9,7 +9,7 @@ public class Planet : MonoBehaviour
     public PlanetData data;
     public Transform pTransform;
 
-    private float multiplier;
+    [HideInInspector]public float multiplier;
 
     public float upgradeCost
     {
@@ -18,6 +18,16 @@ public class Planet : MonoBehaviour
     public float production
     {
         get { return (data.baseProduction * state.upgradeOwned) * multiplier; }
+    }
+
+    public float normalProduction
+    {
+        get { return data.baseProduction * state.upgradeOwned; }
+    }
+    public float nextUpgradeProduction
+    {
+        get {
+            return (data.baseProduction * (state.upgradeOwned + 1)) - normalProduction; }
     }
 
     [Header("Debug")]
@@ -38,7 +48,6 @@ public class Planet : MonoBehaviour
                 GetHapinessPointsAfterBeingAway();
             else
             {
-                face.sprite = GameAssets.Main.lockedPlanet;
                 this.gameObject.SetActive(false);
             }
         }
@@ -61,7 +70,17 @@ public class Planet : MonoBehaviour
 
     public void BuyUpgrade()
     {
+        if (!state.unlocked)
+            UnlockPlanet();
         state.upgradeOwned++;
+    }
+
+    void UnlockPlanet()
+    {
+        state.unlocked = true;
+        GameManager.ownedPlanets.Add(this);
+        this.gameObject.SetActive(true);
+        GetNewHapinessState(state.hapinessPoint);
     }
 
     public void IncreaseHapiness()
@@ -153,10 +172,6 @@ public class Planet : MonoBehaviour
             default:
                 break;
         }
-
-        //Display the multiplicator value under the hapiness bar
-        GameAssets.Main.multiplicatorTextMesh.text = string.Format("x{0}", multiplier);
-        GameAssets.Main.multiplicatorTextMesh.fontSize = defaultMultiplicatorTextFontSize * multiplier;
     }
 
     public static float defaultMultiplicatorTextFontSize;
@@ -207,8 +222,6 @@ public class PlanetState
 public class PlanetData
 {
     public string planetName;
-    [Header("Planet cost")]
-    public float planetCost;
     [Header("First cost of the upgrade")]
     public float baseCost;
     [Header("nbr generated/s")]

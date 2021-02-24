@@ -36,17 +36,13 @@ public class ShopPanel : MonoBehaviour
 
     private void UpdateUI()
     {
-        while(entrys.Count != GameManager.ownedPlanets.Count)
-        {
-            ShopEntry entry = Instantiate(entryTemplate, contentParent);
-            entrys.Add(entry);
-            entry.gameObject.SetActive(true);
-        }
-
-        for (int i = 0; i < entrys.Count; i++)
-        {
-            Planet p = gm.allPlanets[i];
-            entrys[i].SetupEntry(p);
-        }
+        if (entrys.Count == 0)
+            for (int i = 0; i < gm.allPlanets.Count; i++)
+            {
+                ShopEntry entry = Instantiate(entryTemplate, contentParent);
+                entrys.Add(entry);
+                entry.gameObject.SetActive(true);
+                entrys[i].SetupEntry(gm.allPlanets[i]);
+            }
     }
 }

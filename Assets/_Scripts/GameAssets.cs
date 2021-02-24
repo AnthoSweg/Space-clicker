@@ -21,6 +21,7 @@ public class GameAssets : MonoBehaviour
     public GameObject ShopPanel;
     public GameObject PlanetPanel;
     public Slider hapinessSlider;
+    public ParticleSystem tapEffect;
     [Header("Texts")]
     public TextMeshProUGUI currencyTextMesh;
     public TextMeshProUGUI currencyProdTextMesh;
