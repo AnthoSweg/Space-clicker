@@ -12,13 +12,17 @@ public class ShopEntry : MonoBehaviour
     public TextMeshProUGUI dps;
     public TextMeshProUGUI dpsGain;
     public TextMeshProUGUI upgradesOwned;
+    public TextMeshProUGUI lvlup;
     private Planet planet;
+
+    public Color pink;
+    public Color blue;
 
     public void SetupEntry(Planet p)
     {
         planet = p;
         nameTextMesh.text = planet.data.planetName;
-        icon.sprite = planet.data.faces[3];
+        icon.sprite = planet.data.shopIcon;
         UpdateEntry();
     }
 
@@ -26,15 +30,17 @@ public class ShopEntry : MonoBehaviour
     {
         if (planet.state.unlocked)
         {
-            upgradesOwned.text = string.Format("Lv. {0}", planet.state.upgradeOwned.ToString());
-            dps.text = string.Format("Joy : {0}/s", planet.normalProduction.ToString("F1"));
+            upgradesOwned.text = string.Format("Lv. <color=#{1}>{0}</color>", planet.state.upgradeOwned.ToString(), ColorUtility.ToHtmlStringRGB(blue));
+            dps.text = string.Format("Joy per second: <color=#{1}>{0} Joy</color>", planet.normalProduction.ToString("F1"), ColorUtility.ToHtmlStringRGB(pink));
 
-            price.text = string.Format("Buy upgrade for {0}", planet.upgradeCost.ToString("F1"));
+            price.text = string.Format("Joy {0}", planet.upgradeCost.ToString("F1"));
+            lvlup.text = ("level up");
             dpsGain.text = string.Format("+{0} Joy/s", planet.nextUpgradeProduction.ToString("F1"));
         }
         else
         {
-            price.text = string.Format("Unlock {1} for {0}", planet.upgradeCost.ToString("F1"), planet.data.planetName);
+            price.text = string.Format("Joy {0}", planet.upgradeCost.ToString("F1"), planet.data.planetName);
+            lvlup.text = ("UNLOCK");
             upgradesOwned.text = string.Empty;
             dps.text = string.Empty;
             dpsGain.text = string.Empty;

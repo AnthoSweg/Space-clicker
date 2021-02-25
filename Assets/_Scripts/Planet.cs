@@ -45,7 +45,10 @@ public class Planet : MonoBehaviour
         {
             this.state = ps;
             if (state.unlocked)
+            {
                 GetHapinessPointsAfterBeingAway();
+                this.gameObject.SetActive(true);
+            }
             else
             {
                 this.gameObject.SetActive(false);
@@ -230,6 +233,7 @@ public class PlanetData
     public float rateGrowth = 1.07f;
     [Header("Faces from saddest to happiest")]
     public Sprite[] faces;
+    public Sprite shopIcon;
 }
 
 public enum Hapiness

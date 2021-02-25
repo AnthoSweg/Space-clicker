@@ -117,7 +117,6 @@ public class GameManager : MonoBehaviour
 
     Vector2 newPos;
     private float timeInGame;
-    public float testValue;
     void Orbit()
     {
         if (focusedPlanet == null)
@@ -166,10 +165,10 @@ public class GameManager : MonoBehaviour
 
     private void UpdateCurrencyUI(float gainedCurrency = -1)
     {
-        GameAssets.Main.currencyTextMesh.text = GameState.CurrentState.currency.ToString("F2");
+        GameAssets.Main.currencyTextMesh.text = string.Format("{0} Joy", GameState.CurrentState.currency.ToString("F2"));
 
         if (gainedCurrency != -1)
-            GameAssets.Main.currencyProdTextMesh.text = gainedCurrency.ToString("F2");
+            GameAssets.Main.currencyProdTextMesh.text = string.Format("{0} Joy/s", gainedCurrency.ToString("F2"));
     }
 
     void UpdatePlanetPanel()
