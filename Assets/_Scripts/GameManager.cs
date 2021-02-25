@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < ownedPlanets.Count; i++)
         {
             //if (allPlanets[i].state.unlocked)
-            gainedCurrency += ownedPlanets[i].production;
+            gainedCurrency += ownedPlanets[i].acutalProduction;
         }
         GameState.CurrentState.currency += gainedCurrency * Time.deltaTime * second;
 
@@ -175,8 +175,8 @@ public class GameManager : MonoBehaviour
     {
         if (focusedPlanet != null)
         {
-            GameAssets.Main.hapinessSlider.value = focusedPlanet.state.hapinessPoint / (float)Hapiness.maximumJoy;
-            GameAssets.Main.planetProdTextMesh.text = string.Format("{0} Joy/s", focusedPlanet.production.ToString("F2"));
+            GameAssets.Main.hapinessSlider.value = focusedPlanet.state.hapinessPoint / (GameParams.Main.happinessPointsNeededPerLevel[3]);
+            GameAssets.Main.planetProdTextMesh.text = string.Format("{0} Joy/s", focusedPlanet.acutalProduction.ToString("F2"));
 
             //Display the multiplicator value under the hapiness bar
             GameAssets.Main.multiplicatorTextMesh.text = string.Format("x{0}", focusedPlanet.multiplier);

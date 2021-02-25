@@ -14,7 +14,9 @@ public class GameParams : MonoBehaviour
     }
 
     public List<PlanetData> planetDatas = new List<PlanetData>();
+    public float[] happinessPointsNeededPerLevel = new float[4];
     public float[] baseMultiplierPerHapniessLevel = new float[4]; //4 hapiness level exist
+    public float hapinessDecreaseSpeed = 1;
     public float baseMaxTimeAwayInHour = 2;
 
     public Ellipse orbit;
