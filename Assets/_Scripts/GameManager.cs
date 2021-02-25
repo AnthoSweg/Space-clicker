@@ -119,19 +119,21 @@ public class GameManager : MonoBehaviour
     private float timeInGame;
     void Orbit()
     {
-        if (focusedPlanet == null)
+        for (int i = 0; i < ownedPlanets.Count; i++)
         {
-            timeInGame += Time.deltaTime;
-            for (int i = 0; i < ownedPlanets.Count; i++)
+            newPos = Vector2.zero;
+            if (focusedPlanet == null)
             {
-                //First planet (index 0) is at the center and must not orbit
-                if (i > 0)
-                {
-                    newPos = GameParams.Main.orbit.Evaluate(((1f / (ownedPlanets.Count - 1)) * i) + timeInGame * GameParams.Main.orbitSpeed);
-                    //newPos = GameParams.Main.orbit.Evaluate(testValue * i);
-                    ownedPlanets[i].pTransform.position = newPos;
-                }
+                timeInGame += Time.deltaTime;
             }
+            //First planet (index 0) is at the center and must not orbit
+            if (i > 0)
+                newPos = GameParams.Main.orbit.Evaluate(((1f / (ownedPlanets.Count - 1)) * i) + timeInGame * GameParams.Main.orbitSpeed);
+
+            float yOffset = Mathf.Sin(Time.time * (3 * ((int)ownedPlanets[i].hapiness + 1))) * GameParams.Main.amplitude;
+            newPos += new Vector2(0, yOffset);
+
+            ownedPlanets[i].pTransform.position = newPos;
         }
     }
 
