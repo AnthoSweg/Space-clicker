@@ -2405,7 +2405,7 @@ MonoBehaviour:
   - 0.75
   - 1
   - 1.25
-  hapinessDecreaseSpeed: 1
+  hapinessDecreaseSpeed: -15
   baseMaxTimeAwayInHour: 2
   orbit:
     xAxis: 2.5
@@ -19961,11 +19961,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7119428533268478918, guid: 5f71395da1d8c424abb8ea5b260d0f69,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 8918468333392436072, guid: 5f71395da1d8c424abb8ea5b260d0f69,
         type: 3}
       propertyPath: m_RootOrder

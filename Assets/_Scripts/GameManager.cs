@@ -99,8 +99,10 @@ public class GameManager : MonoBehaviour
             focusedPlanet.IncreaseHapiness();
             //GainCurrency();
             Vector3 clickpos = GameAssets.Main.camController.cam.ScreenToWorldPoint(mousePos);
-            GameAssets.Main.tapEffect.transform.position = new Vector3(clickpos.x, clickpos.y, 0);
+            clickpos = new Vector3(clickpos.x, clickpos.y, 0);
+            GameAssets.Main.tapEffect.transform.position = clickpos;
             GameAssets.Main.tapEffect.Play();
+            focusedPlanet.SetLookAtTarget(clickpos);
         }
         else
         {

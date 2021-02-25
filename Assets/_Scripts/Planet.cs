@@ -5,6 +5,9 @@ using System;
 
 public class Planet : MonoBehaviour
 {
+    public GameObject eyes;
+    
+    [Header("Debug")]
     public PlanetState state;
     public PlanetData data;
     public Transform pTransform;
@@ -73,6 +76,8 @@ public class Planet : MonoBehaviour
         state.hapinessPoint -= Time.deltaTime * GameParams.Main.hapinessDecreaseSpeed;
         state.hapinessPoint = Mathf.Clamp(state.hapinessPoint, 0, GameParams.Main.happinessPointsNeededPerLevel[3]);
 
+        LookAtPoint();
+
         GetNewHapinessState();
 
         lastFrameHapiness = hapiness;
@@ -96,6 +101,19 @@ public class Planet : MonoBehaviour
     public void IncreaseHapiness()
     {
         state.hapinessPoint++;
+    }
+
+    public float maxOffset;
+    private Vector2 lookPoint;
+    public float lookSpeed;
+    private void LookAtPoint()
+    {
+        eyes.transform.localPosition = Vector2.Lerp(eyes.transform.localPosition, lookPoint,  lookSpeed);
+    }
+
+    public void SetLookAtTarget(Vector2 touchPoint)
+    {
+        lookPoint = eyes.transform.InverseTransformPoint(touchPoint.normalized) * maxOffset;
     }
 
     public void GetNewHapinessState(bool forceUpdate = false)
