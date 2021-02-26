@@ -6,7 +6,7 @@ using System;
 public class Planet : MonoBehaviour
 {
     public GameObject eyes;
-    
+
     [Header("Debug")]
     public PlanetState state;
     public PlanetData data;
@@ -77,10 +77,10 @@ public class Planet : MonoBehaviour
         state.hapinessPoint -= Time.deltaTime * GameParams.Main.hapinessDecreaseSpeed;
         state.hapinessPoint = Mathf.Clamp(state.hapinessPoint, 0, GameParams.Main.happinessPointsNeededPerLevel[3]);
 
-        if(!focused)
+        if (!focused)
         {
             timer -= Time.deltaTime;
-            if(timer<=0)
+            if (timer <= 0)
             {
                 timer = UnityEngine.Random.Range(1, 5);
                 SetLookAtTarget(new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)));
@@ -98,7 +98,8 @@ public class Planet : MonoBehaviour
     {
         if (!state.unlocked)
             UnlockPlanet();
-        state.upgradeOwned++;
+        else
+            state.upgradeOwned++;
     }
 
     void UnlockPlanet()
@@ -119,7 +120,7 @@ public class Planet : MonoBehaviour
     public float lookSpeed;
     private void LookAtPoint()
     {
-        eyes.transform.localPosition = Vector2.Lerp(eyes.transform.localPosition, lookPoint,  lookSpeed);
+        eyes.transform.localPosition = Vector2.Lerp(eyes.transform.localPosition, lookPoint, lookSpeed);
     }
 
     public void SetLookAtTarget(Vector3 touchPoint)
@@ -282,7 +283,6 @@ public class PlanetData
     [Header("Exponential growth")]
     public float rateGrowth = 1.07f;
     [Header("Faces from saddest to happiest")]
-    public Sprite[] faces;
     public Sprite shopIcon;
 }
 

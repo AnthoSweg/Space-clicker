@@ -13,6 +13,8 @@ public class ShopPanel : MonoBehaviour
 
     private List<ShopEntry> entrys = new List<ShopEntry>();
 
+    private int buyNumber = 1;
+
     public void Click()
     {
         opened = !opened;
@@ -26,7 +28,7 @@ public class ShopPanel : MonoBehaviour
     public void OpenPanel()
     {
         parent.DOAnchorPosY(0, .5f);
-        UpdateUI();
+        SetupUI();
     }
 
     public void ClosePanel()
@@ -34,7 +36,7 @@ public class ShopPanel : MonoBehaviour
         parent.DOAnchorPosY(-400, .5f);
     }
 
-    private void UpdateUI()
+    private void SetupUI()
     {
         if (entrys.Count == 0)
             for (int i = 0; i < gm.allPlanets.Count; i++)
@@ -44,5 +46,28 @@ public class ShopPanel : MonoBehaviour
                 entry.gameObject.SetActive(true);
                 entrys[i].SetupEntry(gm.allPlanets[i]);
             }
+    }
+
+    private void Update()
+    {
+        if (Time.frameCount % 10 == 0)
+            UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        for (int i = 0; i < entrys.Count; i++)
+        {
+            entrys[i].UpdateEntry();
+        }
+    }
+
+    public void SetBuyNumber(int nbr)
+    {
+        buyNumber = nbr;
+        for (int i = 0; i < entrys.Count; i++)
+        {
+            entrys[i].GetCurrentCost(nbr);
+        }
     }
 }
