@@ -155,6 +155,7 @@ public class GameManager : MonoBehaviour
     private void FocusPlanet(Planet planet)
     {
         focusedPlanet = planet;
+        focusedPlanet.Focus(true);
         focusedPlanet.GetNewHapinessState();
         GameAssets.Main.camController.ZoomIn(planet.pTransform);
         GameAssets.Main.PlanetPanel.SetActive(true);
@@ -162,6 +163,8 @@ public class GameManager : MonoBehaviour
 
     public void UnfocusPlanet()
     {
+        focusedPlanet.SetLookAtTarget(Vector3.zero);
+        focusedPlanet.Focus(false);
         focusedPlanet = null;
         GameAssets.Main.camController.ZoomOut();
         GameAssets.Main.PlanetPanel.SetActive(false);
@@ -190,6 +193,8 @@ public class GameManager : MonoBehaviour
 
     public void SwitchToNextPlanet()
     {
+        focusedPlanet.SetLookAtTarget(Vector3.zero);
+        focusedPlanet.Focus(true);
         int index = ownedPlanets.IndexOf(focusedPlanet);
         index++;
         if (index > ownedPlanets.Count - 1)
@@ -199,6 +204,8 @@ public class GameManager : MonoBehaviour
 
     public void SwitchToPrevPlanet()
     {
+        focusedPlanet.SetLookAtTarget(Vector3.zero);
+        focusedPlanet.Focus(false);
         int index = ownedPlanets.IndexOf(focusedPlanet);
         index--;
         if (index < 0)

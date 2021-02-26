@@ -68,6 +68,7 @@ public class Planet : MonoBehaviour
     }
 
     private Hapiness lastFrameHapiness;
+    private float timer;
     private void LateUpdate()
     {
         if (!GameManager.gameStarted)
@@ -75,6 +76,16 @@ public class Planet : MonoBehaviour
 
         state.hapinessPoint -= Time.deltaTime * GameParams.Main.hapinessDecreaseSpeed;
         state.hapinessPoint = Mathf.Clamp(state.hapinessPoint, 0, GameParams.Main.happinessPointsNeededPerLevel[3]);
+
+        if(!focused)
+        {
+            timer -= Time.deltaTime;
+            if(timer<=0)
+            {
+                timer = UnityEngine.Random.Range(1, 5);
+                SetLookAtTarget(new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)));
+            }
+        }
 
         LookAtPoint();
 
@@ -111,9 +122,20 @@ public class Planet : MonoBehaviour
         eyes.transform.localPosition = Vector2.Lerp(eyes.transform.localPosition, lookPoint,  lookSpeed);
     }
 
-    public void SetLookAtTarget(Vector2 touchPoint)
+    public void SetLookAtTarget(Vector3 touchPoint)
     {
-        lookPoint = eyes.transform.InverseTransformPoint(touchPoint.normalized) * maxOffset;
+        if (touchPoint == Vector3.zero)
+            //    lookPoint = eyes.transform.localPosition.
+
+            lookPoint = Vector2.zero;
+        else
+            lookPoint = (touchPoint - eyes.transform.position).normalized * maxOffset;
+    }
+
+    private bool focused = false;
+    public void Focus(bool focus)
+    {
+        focused = focus;
     }
 
     public void GetNewHapinessState(bool forceUpdate = false)
