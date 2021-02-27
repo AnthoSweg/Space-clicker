@@ -13,7 +13,9 @@ public class GameState
 
     #region Data Saved
 
-    public Options options;
+    public Options options = new Options();
+
+    public Upgrades upgrades = new Upgrades(0, 0, 0);
 
     public double currency;
 
@@ -45,6 +47,20 @@ public class GameState
         public string language;
         public float mVolume = 0f;
         public float sVolume = 0f;
+    }
+
+    [System.Serializable]
+    public class Upgrades
+    {
+        public Upgrades(int a, int b, int c)
+        {
+            hapinessLevelUpgrade = a;
+            hapinessDecreaseSpeedUpgrade = b;
+            multiplicatorUpgrade = c;
+        }
+        public int hapinessLevelUpgrade = 0;
+        public int hapinessDecreaseSpeedUpgrade = 0;
+        public int multiplicatorUpgrade = 0;
     }
 
     #region methods

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     //I don't put anything in Start or Awake, this way I have control on the order of execution of everything and make sure there are no errors
     public void Initialize()
     {
-        Planet.defaultMultiplicatorTextFontSize = GameAssets.Main.multiplicatorTextMesh.fontSize;
+        //Planet.defaultMultiplicatorTextFontSize = GameAssets.Main.multiplicatorTextMesh.fontSize;
 
         //Setup all planets
         for (int i = 0; i < allPlanets.Count; i++)
@@ -182,12 +182,12 @@ public class GameManager : MonoBehaviour
     {
         if (focusedPlanet != null)
         {
-            GameAssets.Main.hapinessSlider.value = focusedPlanet.state.hapinessPoint / (GameParams.Main.happinessPointsNeededPerLevel[3]);
+            GameAssets.Main.hapinessSlider.value = focusedPlanet.state.hapinessPoint / ((GameParams.Main.happinessPointsNeededPerLevel[3] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade]));
             GameAssets.Main.planetProdTextMesh.text = string.Format("{0} Joy/s", focusedPlanet.acutalProduction.ToString("F2"));
 
             //Display the multiplicator value under the hapiness bar
             GameAssets.Main.multiplicatorTextMesh.text = string.Format("x{0}", focusedPlanet.multiplier);
-            GameAssets.Main.multiplicatorTextMesh.fontSize = Planet.defaultMultiplicatorTextFontSize * focusedPlanet.multiplier;
+            //GameAssets.Main.multiplicatorTextMesh.fontSize = Planet.defaultMultiplicatorTextFontSize * focusedPlanet.multiplier;
         }
     }
 

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class ShopPanel : MonoBehaviour
+public class ShopPanel : MonoBehaviour, IMenuPanel
 {
     public GameManager gm;
+    public Menu menu;
     public RectTransform parent;
     public RectTransform contentParent;
-    private bool opened;
     public ShopEntry entryTemplate;
 
     private List<ShopEntry> entrys = new List<ShopEntry>();
@@ -17,12 +17,7 @@ public class ShopPanel : MonoBehaviour
 
     public void Click()
     {
-        opened = !opened;
-
-        if (opened)
-            OpenPanel();
-        else
-            ClosePanel();
+        menu.Click(this);
     }
 
     public void OpenPanel()
@@ -50,8 +45,12 @@ public class ShopPanel : MonoBehaviour
 
     private void Update()
     {
-        if (Time.frameCount % 10 == 0)
-            UpdateUI();
+        if ((Object)menu.openedMenu == this)
+            if (Time.frameCount % 10 == 0)
+            {
+                UpdatePrice();
+                UpdateUI();
+            }
     }
 
     private void UpdateUI()
@@ -65,9 +64,14 @@ public class ShopPanel : MonoBehaviour
     public void SetBuyNumber(int nbr)
     {
         buyNumber = nbr;
+        UpdatePrice();
+    }
+
+    private void UpdatePrice()
+    {
         for (int i = 0; i < entrys.Count; i++)
         {
-            entrys[i].GetCurrentCost(nbr);
+            entrys[i].GetCurrentCost(buyNumber);
         }
     }
 }

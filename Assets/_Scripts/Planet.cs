@@ -74,8 +74,8 @@ public class Planet : MonoBehaviour
         if (!GameManager.gameStarted)
             return;
 
-        state.hapinessPoint -= Time.deltaTime * GameParams.Main.hapinessDecreaseSpeed;
-        state.hapinessPoint = Mathf.Clamp(state.hapinessPoint, 0, GameParams.Main.happinessPointsNeededPerLevel[3]);
+        state.hapinessPoint -= Time.deltaTime / GameParams.Main.hapinessDecreaseSpeedUpgrade[GameState.CurrentState.upgrades.hapinessDecreaseSpeedUpgrade];
+        state.hapinessPoint = Mathf.Clamp(state.hapinessPoint, 0, (GameParams.Main.happinessPointsNeededPerLevel[3]* GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])+1);
 
         if (!focused)
         {
@@ -146,36 +146,36 @@ public class Planet : MonoBehaviour
             switch (hapiness)
             {
                 case Hapiness.asleep:
-                    if (state.hapinessPoint >= GameParams.Main.happinessPointsNeededPerLevel[1])
+                    if (state.hapinessPoint >= GameParams.Main.happinessPointsNeededPerLevel[1] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
                     {
                         hapiness = Hapiness.bored;
                     }
                     break;
 
                 case Hapiness.bored:
-                    if (state.hapinessPoint >= GameParams.Main.happinessPointsNeededPerLevel[2])
+                    if (state.hapinessPoint >= GameParams.Main.happinessPointsNeededPerLevel[2] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
                     {
                         hapiness = Hapiness.happy;
                     }
-                    else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[0])
+                    else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[0] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
                     {
                         hapiness = Hapiness.asleep;
                     }
                     break;
 
                 case Hapiness.happy:
-                    if (state.hapinessPoint >= GameParams.Main.happinessPointsNeededPerLevel[3])
+                    if (state.hapinessPoint >= GameParams.Main.happinessPointsNeededPerLevel[3] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
                     {
                         hapiness = Hapiness.maximumJoy;
                     }
-                    else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[1])
+                    else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[1] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
                     {
                         hapiness = Hapiness.bored;
                     }
                     break;
 
                 case Hapiness.maximumJoy:
-                    if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[2])
+                    if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[2] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
                     {
                         hapiness = Hapiness.happy;
                     }
@@ -188,19 +188,19 @@ public class Planet : MonoBehaviour
         }
         else
         {
-            if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[0])
+            if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[0] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
             {
                 hapiness = Hapiness.asleep;
             }
-            else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[1])
+            else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[1] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
             {
                 hapiness = Hapiness.bored;
             }
-            else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[2])
+            else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[2] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
             {
                 hapiness = Hapiness.happy;
             }
-            else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[3])
+            else if (state.hapinessPoint <= GameParams.Main.happinessPointsNeededPerLevel[3] * GameParams.Main.hapinessLevelUpgrade[GameState.CurrentState.upgrades.hapinessLevelUpgrade])
             {
                 hapiness = Hapiness.maximumJoy;
             }
@@ -211,23 +211,23 @@ public class Planet : MonoBehaviour
         switch (hapiness)
         {
             case Hapiness.asleep:
-                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0];
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[0] * GameParams.Main.multiplicatorUpgrade[GameState.CurrentState.upgrades.multiplicatorUpgrade];
                 break;
             case Hapiness.bored:
-                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[1];
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[1] * GameParams.Main.multiplicatorUpgrade[GameState.CurrentState.upgrades.multiplicatorUpgrade];
                 break;
             case Hapiness.happy:
-                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[2];
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[2] * GameParams.Main.multiplicatorUpgrade[GameState.CurrentState.upgrades.multiplicatorUpgrade];
                 break;
             case Hapiness.maximumJoy:
-                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[3];
+                multiplier = GameParams.Main.baseMultiplierPerHapniessLevel[3] * GameParams.Main.multiplicatorUpgrade[GameState.CurrentState.upgrades.multiplicatorUpgrade];
                 break;
             default:
                 break;
         }
     }
 
-    public static float defaultMultiplicatorTextFontSize;
+    //public static float defaultMultiplicatorTextFontSize;
     void UpdateBehaviour()
     {
         switch (hapiness)

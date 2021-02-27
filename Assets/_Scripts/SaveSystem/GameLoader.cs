@@ -27,12 +27,15 @@ public class GameLoader : MonoBehaviour
             gm.allPlanets[i].data = GameParams.Main.planetDatas[i];
             gm.allPlanets[i].state.planetName = gm.allPlanets[i].data.planetName;
             GameState.CurrentState.planetStates.Add(gm.allPlanets[i].state);
+            Debug.Log("addding planet state");
         }
         //Unlock first planet by default and set its state to happy
         gm.allPlanets[0].state.unlocked = true;
         gm.allPlanets[0].state.hapinessPoint = (int)Hapiness.happy;
 
         gm.Initialize();
+
+        SaveFile.Write();
     }
 
     private void LoadGame()
