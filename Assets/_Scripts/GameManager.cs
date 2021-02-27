@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
     public void OnClick()
     {
         //Block actions if the click hits a UI element
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() || EventSystem.current.IsPointerOverGameObject(0)|| EventSystem.current.IsPointerOverGameObject(-1))
             return;
 
         if (focusedPlanet != null)
@@ -211,6 +211,16 @@ public class GameManager : MonoBehaviour
         if (index < 0)
             index = ownedPlanets.Count - 1;
         FocusPlanet(ownedPlanets[index]);
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        Save();
+    }
+
+    private void OnApplicationQuit()
+    {
+        Save();
     }
 
     public static void Save()
